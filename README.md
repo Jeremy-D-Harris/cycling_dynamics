@@ -11,7 +11,7 @@ Jeremy D. Harris, Brigitte Martin, Molly E. Gallagher, Christopher B. Brooke, Ka
 - This repository contains all the MATLAB codes for simulating models and fitting models to data: <br>
   (1) Modelling and fitting to Genomic Equivalents (GE) for total viral yield in bulk cell culture;    <br>
   (2) The mean number of DIs equivalent to infection with at least 1 WT virus <br>
-  (3) Modelling and fitting to Tissue Culture Infectious Dose 50\% (TCID$_{50}$) for the proportion of       WT virus in total viral yield.<br>
+  (3) Modelling and fitting to Tissue Culture Infectious Dose 50\% (TCID50) for the proportion of       WT virus in total viral yield.<br>
   (4) Simulating passage study models with best-fit parameter estimates
 
 A preprint of the manuscript can be found on MedRxiv: [DOI](Not yet!) Not yet!!!
@@ -44,7 +44,7 @@ Each of the main scripts, reads in the data from 'Code_plt_ms_figures/data/' and
 - **Source_Data** Folder containing data shown and used: <br>
   - 'Source_Data_1.xlsx' - Passage study data: 2 lines over 73 passages; HAU and TCID50 measurements. <br>
   - 'Source_Data_2.xlsx' - Total viral yield (GE/mL) vs. WT mean MOI (WT stock) <br>
-  - 'Source_Data_3.xlsx' - Total viral yield (GE/mL) and infectious virus (TCID$_{50}$) vs. WT:DI; the proportion WT virus by gene segment from WT stock/from DI-enriched stock  <br>
+  - 'Source_Data_3.xlsx' - Total viral yield (GE/mL) and infectious virus (TCID50) vs. WT:DI; the proportion WT virus by gene segment from WT stock/from DI-enriched stock  <br>
 
 ---
 
