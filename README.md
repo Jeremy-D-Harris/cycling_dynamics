@@ -1,3 +1,4 @@
+### cycling_dynamics
 # Influenza virus population cycles emerge from collections of variably responding cells
 Jeremy D. Harris, Brigitte Martin, Molly E. Gallagher, Christopher B. Brooke, Katia Koelle July 2022
 
@@ -52,5 +53,4 @@ Each of the main scripts, reads in the data from 'Code_plt_ms_figures/data/' and
 [2] <br>
 [3] <br>
 [4]<br>
-# cycling_dynamics
-# cycling_dynamics
+
