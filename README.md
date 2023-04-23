@@ -1,8 +1,13 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ### cycling_dynamics
 # Influenza virus population cycles emerge from collections of variably responding cells
-Jeremy D. Harris, Brigitte Martin, Molly E. Gallagher, Christopher B. Brooke, Katia Koelle July 2022
+Jeremy D. Harris, Brigitte Martin, Molly E. Gallagher, Christopher B. Brooke, Katia Koelle (~ estimated time to submitted: July 2023)
 
- -- *updated 07/11/22 by jdh* --
+ -- *updated 04/23/22 by jdh* --
 
 ---
 
@@ -45,7 +50,11 @@ Each of the main scripts, reads in the data from 'Code_plt_ms_figures/data/' and
   - 'Source_Data_1.xlsx' - Passage study data: 2 lines over 73 passages; HAU and TCID50 measurements. <br>
   - 'Source_Data_2.xlsx' - Total viral yield (GE/mL) vs. WT mean MOI (WT stock) <br>
   - 'Source_Data_3.xlsx' - Total viral yield (GE/mL) and infectious virus (TCID50) vs. WT:DI; the proportion WT virus by gene segment from WT stock/from DI-enriched stock  <br>
+  We save csv files from these spreadhsheets to perform statistical tests using Rstudio. The codes are available in the "Stats" folder.
 
+- **Stats** Codes to perform statistical comparisons on WT-DI treatments: <br>  
+  - Treatments shown in Figure 3A-B
+  
 ---
 
 **References:** <br>
