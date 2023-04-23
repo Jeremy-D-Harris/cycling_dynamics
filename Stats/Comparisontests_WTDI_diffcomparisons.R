@@ -29,11 +29,11 @@ my_file <- "./../Source_Data/Figure3B_Data_fixed.csv"
 
 # data <- read_csv(my_file,head=TRUE)  # read in the csv data file
 data <- read_csv(my_file)  # read in the csv data file
+colnames(data) <- c('treatment','replicate 1', 'replicate 2',  'replicate 3')
 # view(data)
 
 # pivot into longer format
 long_data <- pivot_longer(data,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
-
 colnames(long_data) <- c('treatment','replicate','total_viral_yield')
 
 
@@ -69,6 +69,7 @@ ggsave("graph_Figure3B_data.pdf", graph_Figure3B_data,height=4.5, width=6)
 my_file_comparisons <- "./../Source_Data/yield_comparisons.csv"
 
 data_comparisons <- read_csv(my_file_comparisons,show_col_types = FALSE)  # read in the csv data file
+colnames(data_comparisons) <- c('treatment','replicate 1', 'replicate 2',  'replicate 3')
 # show_col_types = FALSE - this was due to an error, since cell 1,1 is empty -> gets filled with '...1'
 # 1. WT:DI = 1:0
 # 2. WT:DI = 1:0.1
@@ -80,6 +81,7 @@ data_comparisons <- read_csv(my_file_comparisons,show_col_types = FALSE)  # read
 # compare treatments with WT
 long_data_comparisons <- pivot_longer(data_comparisons,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
 colnames(long_data_comparisons) <- c('treatment','replicate','total_viral_yield')
+
 
 kuskal_wallis_multiple_means <- kruskal.test(total_viral_yield~treatment, data = long_data_comparisons)
 # kuskal_wallis_multiple_means <-  long_data %>% kruskal.test(total_viral_yield~treatment)
@@ -102,34 +104,43 @@ ggarrange(graph_compare_withWT, nrow=1)
 
 ggsave("graph_compare_withWT.pdf", graph_compare_withWT,height=4.5, width=8)
 
+# data_combine
+# 1. WT:DI = 1:0
+# 2. WT:DI = 0:10
+# 3. WT:DI = 1:0
+# 4. WT:DI = 1:0.1
+# 5. WT:DI = 1:1
+# 6. WT:DI = 1:10
+# 7. WT:DI = 1:100
+
+
 
 # combine treatments with and without WT virus
+data_combine <-merge(x=data,y=data_comparisons,all= T)
+print(data_combine)
+class(data_combine)
 
 
-combine_data <- c(data,data_comparisons) %>% summarise(t())
-# combine_data <- rownames(c(1:7),prefix = "row")
-
-# rownames(combine_data) <- c("Row1","Row2","Row3","Row4","Row5","Row6","Row7")
-print(combine_data)
+# pivot into longer format
+long_data_combine <- pivot_longer(data_combine,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
+colnames(long_data_combine) <- c('treatment','replicate','total_viral_yield')
 
 
-# create large table
-long_data_combine <- full_join(long_data,long_data_comparisons)
-print(long_data_combine,n=21)
+
 
 kuskal_wallis_multiple_means_combine <- kruskal.test(total_viral_yield~treatment, data = long_data_combine)
 # kuskal_wallis_multiple_means <-  long_data %>% kruskal.test(total_viral_yield~treatment)
 print(kuskal_wallis_multiple_means_combine)
 
 
-
-graph_compare_combine <- ggplot(data = long_data_combine, aes(x=treatment, y=total_viral_yield,fill=replicate)) +
-  geom_bar(stat="identity", position=position_dodge())+
+graph_compare_combine <- ggplot(data = long_data_combine, aes(x=treatment, y=total_viral_yield,group=replicate,fill=treatment)) +
+  geom_bar(stat="identity", colour="black",position=position_dodge(),,show.legend = FALSE)+
   scale_y_log10()+
   # geom_line(size = 0.75,alpha=0.9)+
   labs(x = "Ratio WT to DI virus inoculum", y = "Total viral yield (GE/mL)")+
   theme_bw()+
-  scale_fill_brewer(palette="Blues")+
+  # scale_fill_brewer(palette="Blues")+
+  scale_fill_manual(values=c("#63ABBD","#0F2080","#BDB8AD","#EE442F","#A95AA1","#5F1A4A","#63ABBD"))
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "lines"),
         axis.text = element_text(size = 11),
         axis.title = element_text(size = 12));
@@ -140,17 +151,64 @@ ggarrange(graph_compare_combine, nrow=1)
 
 ggsave("graph_compare_combine.pdf", graph_compare_combine,height=4.5, width=11)
 
+# ----- for reference -----
+# data_combine
+# 1. WT:DI = 1:0
+# 2. WT:DI = 0:10
+# 3. WT:DI = 1:0
+# 4. WT:DI = 1:0.1
+# 5. WT:DI = 1:1
+# 6. WT:DI = 1:10
+# 7. WT:DI = 1:100
 
-## 5 vs. 1
-treatment_five_vs_one <- subset(data_comparisons,subset = rownames(data_comparisons) %in% c('1','5')) 
 
-long_data_five_vs_one <- pivot_longer(treatment_five_vs_one,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
-colnames(long_data_five_vs_one) <- c('treatment','replicate','total_viral_yield')
+## combine subsets of treatments for pair-wise comparisons
+# compare_WT_only_treatments <- data_combine[],subset = rownames(data_comparisons) == c(" WT 1 DI 0"))
+
+# combine treatments with and without WT virus
+compare_WT_only_treatments <-merge(x=data_combine[1,],y=data_combine[7,],all= T)
+print(compare_WT_only_treatments)
+
+long_compare_WT_only_treatments <- pivot_longer(compare_WT_only_treatments,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
+colnames(long_compare_WT_only_treatments) <- c('treatment','replicate','total_viral_yield')
+
+wilcox_test_compare_WT_only_treatments <- wilcox.test(total_viral_yield~treatment, data=long_compare_WT_only_treatments, na.rm=TRUE, paired=FALSE, exact=FALSE,conf.int = TRUE)
+print(wilcox_test_compare_WT_only_treatments)
+
+
+# compare DI = 10 (alone) to WT only in the first group
+# data_combine[1,]
+# data_combine[6,]
+compare_DI_only_WT_only_treatments <-merge(x=data_combine[1,],y=data_combine[6,],all= T)
+print(compare_DI_only_WT_only_treatments)
+
+long_compare_DI_only_WT_only_treatments <- pivot_longer(compare_DI_only_WT_only_treatments,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
+colnames(long_compare_DI_only_WT_only_treatments) <- c('treatment','replicate','total_viral_yield')
+
+wilcox_test_compare_DI_only_WT_only_treatments <- wilcox.test(total_viral_yield~treatment, data=long_compare_DI_only_WT_only_treatments, na.rm=TRUE, paired=FALSE, exact=FALSE,conf.int = TRUE)
+print(wilcox_test_compare_DI_only_WT_only_treatments)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+long_data_two_vs_one <- pivot_longer(long_data_combine,cols = c('replicate 1', 'replicate 2',  'replicate 3'), names_to = 'replicate', values_to = 'total viral yield')
+colnames(long_data_two_vs_one) <- c('treatment','replicate','total_viral_yield')
 # view(long_data_five_vs_one)
 
 # kruskal.test(total_viral_yield ~ treatment, data = long_data) 
-wilcox_test_five_vs_one <- wilcox.test(total_viral_yield~treatment, data=long_data_five_vs_one, na.rm=TRUE, paired=FALSE, exact=FALSE,conf.int = TRUE)
-print(wilcox_test_five_vs_one)
+wilcox_test_two_vs_one <- wilcox.test(total_viral_yield~treatment, data=long_data_two_vs_one, na.rm=TRUE, paired=FALSE, exact=FALSE,conf.int = TRUE)
+print(wilcox_test_two_vs_one)
 
 # # here's student's t-test for comparison!
 # t_test_five_vs_one <- t.test(total_viral_yield~treatment,data=long_data_five_vs_one,
